@@ -1,0 +1,14 @@
+{
+  "name": "ahsapp-persistence-sequelize",
+  "version": "1.0.0",
+  "description": "Sequelize persistence layer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Michael Leffert",
+  "license": "ISC",
+  "dependencies": {
+    "sequelize": "4.13.5"
+  }
+}
