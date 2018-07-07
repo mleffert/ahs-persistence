@@ -9,6 +9,10 @@
   "author": "Michael Leffert",
   "license": "ISC",
   "dependencies": {
-    "sequelize": "4.13.5"
+    "sequelize": "4.38.0"
+  },
+  "devDependencies": {
+    "mysql2": "1.5.3",
+    "sequelize-cli": "4.0.0"
   }
 }
