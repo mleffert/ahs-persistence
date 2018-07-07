@@ -26,6 +26,9 @@ module.exports = function(sequelize, DataTypes) {
         },
         description:{
             type:DataTypes.STRING(750)
+        },
+        isComplete:{
+            type: DataTypes.BOOLEAN
         }
     });
 
