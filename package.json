@@ -1,5 +1,5 @@
 {
-  "name": "ahsapp-persistence-sequelize",
+  "name": "ahs-persistence",
   "version": "1.0.0",
   "description": "Sequelize persistence layer",
   "main": "index.js",
