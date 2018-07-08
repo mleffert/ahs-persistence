@@ -46,5 +46,62 @@ module.exports = function(sequelize, DataTypes) {
         })
     }
 
+    User.prototype.GetUserInfo = async function(req){
+        var ret = null,
+            {models} = this.sequelize;
+        try{
+            ret = await models.users.findOne(
+                {where:
+                        {id: {
+                                    $eq:req.id
+                        }},
+                attributes:['firstName', 'lastName', 'email', 'isTeacher'],
+                include:['Classes', models.studentclass]
+                })
+
+        } catch (e) {
+            throw new Error(e);
+        }
+        return ret;
+    }
+
+
+    User.prototype.VerifyUserOrCreate = async function(req){
+        var ret = null,
+            {models} = this.sequelize;
+
+        try{
+            let [user, newUser] = await models.user.findOrBuild(
+                {where:
+                        {email: {
+                                $eq: req.email
+                            }
+                        }
+                });
+            if(!newUser){
+                user.googleToken = req.accessToken;
+                ret = await user.save();
+                return ret;
+            }
+            let domain = req.email ? req.email.split('@')[1] : "";
+            if(domain.includes('rjuhsd.us')){
+                user.firstName = req.firstName;
+                user.lastName = req.lastName;
+                user.email = req.email;
+                user.googleToken = req.accessToken;
+                if(!domain.includes('student')){
+                    user.isTeacher = true;
+                }
+                ret = await user.save();
+            }
+
+        } catch(error){
+            throw new Error(error);
+        }
+
+        return ret;
+
+    }
+
     return User;
 };
