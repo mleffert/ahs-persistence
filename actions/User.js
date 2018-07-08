@@ -6,28 +6,28 @@ module.exports.VerifyUserOrCreate = async req =>{
     var ret = null;
 
     try{
-        let doesUserExist = await models.user.findOrBuild(
+        let [user, newUser] = await models.user.findOrBuild(
             {where:
                     {email: {
                             $eq: req.email
                         }
                     }
             });
-        if(doesUserExist.email === req.email){
-            doesUserExist.googleToken = req.accessToken;
-            ret = await doesUserExist.save();
+        if(!newUser){
+            user.googleToken = req.accessToken;
+            ret = await user.save();
             return ret;
         }
-        let domain = req.email.split('@')[1];
+        let domain = req.email ? req.email.split('@')[1] : "";
         if(domain.includes('rjuhsd.us')){
-            doesUserExist.firstName = req.firstName;
-            doesUserExist.lastName = req.lastName;
-            doesUserExist.email = req.email;
-            doesUserExist.googleToken = req.accessToken;
+            user.firstName = req.firstName;
+            user.lastName = req.lastName;
+            user.email = req.email;
+            user.googleToken = req.accessToken;
             if(!domain.includes('student')){
-                doesUserExist.isTeacher = true;
+                user.isTeacher = true;
             }
-            ret = await doesUserExist.save();
+            ret = await user.save();
         }
 
     } catch(error){
