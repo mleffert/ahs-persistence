@@ -55,8 +55,8 @@ module.exports = function(sequelize, DataTypes) {
                         {id: {
                                     $eq:req.id
                         }},
-                attributes:['firstName', 'lastName', 'email', 'isTeacher'],
-                include:['Classes', models.studentclass]
+                attributes:['firstName', 'lastName', 'email', 'isTeacher', 'googleToken'],
+                include:['Classes', models.studentclass, {model:'Teacher', where:{isActive:{$eq:true}}}]
                 })
 
         } catch (e) {
