@@ -46,17 +46,17 @@ module.exports = function(sequelize, DataTypes) {
         })
     }
 
-    User.prototype.GetUserInfo = async function(req){
+    User.GetUserInfo = async function(req){
         var ret = null,
             {models} = this.sequelize;
         try{
-            ret = await models.users.findOne(
+            ret = await models.user.findOne(
                 {where:
                         {id: {
-                                    $eq:req.id
-                        }},
-                attributes:['firstName', 'lastName', 'email', 'isTeacher', 'googleToken'],
-                include:['Classes', models.studentclass, {model:'Teacher', where:{isActive:{$eq:true}}}]
+                                $eq:req.id
+                            }},
+                    attributes:['firstName', 'lastName', 'email', 'isTeacher', 'googleToken'],
+                    include:['Classes', models.studentclass, {association:'Teacher', where:{isActive:{$eq:true}}, required: false}]
                 })
 
         } catch (e) {
@@ -66,7 +66,7 @@ module.exports = function(sequelize, DataTypes) {
     }
 
 
-    User.prototype.VerifyUserOrCreate = async function(req){
+    User.VerifyUserOrCreate = async function(req){
         var ret = null,
             {models} = this.sequelize;
 
