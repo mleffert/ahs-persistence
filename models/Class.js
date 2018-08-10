@@ -18,6 +18,14 @@ module.exports = function(sequelize, DataTypes) {
         isActive:{
             type:DataTypes.BOOLEAN
         }
+    }, {
+        scopes:{
+            activeClass:{
+                where:{
+                    isActive:{$eq:true}
+                }
+            }
+        }
     });
 
     Class.associate = function(models) {
@@ -34,6 +42,9 @@ module.exports = function(sequelize, DataTypes) {
             foreignKey:'classId'
         })
     }
+
+
+    Class.findAllActiveCl
 
     return Class;
 };
