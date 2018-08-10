@@ -1,4 +1,3 @@
-import _ from 'lodash';
 module.exports = function(sequelize, DataTypes) {
     const Class = sequelize.define('class', {
         id: {
