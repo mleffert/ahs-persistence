@@ -38,7 +38,7 @@ module.exports = function(sequelize, DataTypes) {
     }
 
 
-    Class.updateOrCreateClass = async function(currentClasses, googleClasses) {
+    Class.updateOrCreateClass = async function(currentClasses, googleClasses, _) {
         let updateClasses = [],
             {models} = this.sequelize;
         for(var gClass of googleClasses){
