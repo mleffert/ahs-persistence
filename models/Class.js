@@ -1,4 +1,4 @@
-
+import _ from 'lodash';
 module.exports = function(sequelize, DataTypes) {
     const Class = sequelize.define('class', {
         id: {
@@ -17,14 +17,9 @@ module.exports = function(sequelize, DataTypes) {
         },
         isActive:{
             type:DataTypes.BOOLEAN
-        }
-    }, {
-        scopes:{
-            activeClass:{
-                where:{
-                    isActive:{$eq:true}
-                }
-            }
+        },
+        googleClassroomId:{
+            type:DataTypes.STRING
         }
     });
 
@@ -44,7 +39,25 @@ module.exports = function(sequelize, DataTypes) {
     }
 
 
-    Class.findAllActiveCl
+    Class.updateOrCreateClass = async function(currentClasses, googleClasses) {
+        let updateClasses = [],
+            {models} = this.sequelize;
+        for(var gClass of googleClasses){
+            let classexists = _.find(currentClasses, ['googleClassroomId', gClass.id])
+            if(classexists && gClass.courseState !== "ACTIVE"){
+                classexists.isActive = false;
+                await classexists.save();
+            } else if(!classexists){
+                let newClass = models.class.build();
+                newClass.className = gClass.name;
+                newClass.googleClassroomId = gClass.id;
+                newClass.isActive = true;
+                await newClass.save();
+            }
+        }
+        return
+
+    }
 
     return Class;
 };
